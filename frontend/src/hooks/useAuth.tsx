@@ -27,26 +27,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const stored = localStorage.getItem('betegna_auth')
     if (stored) {
-      const parsed = JSON.parse(stored) as { user: AuthUser; accessToken: string }
+      const parsed = JSON.parse(stored) as { user: AuthUser; accessToken: string; refreshToken?: string }
       setUser(parsed.user)
       setAccessToken(parsed.accessToken)
     }
   }, [])
 
-  const persist = (u: AuthUser, token: string) => {
+  const persist = (u: AuthUser, accessToken: string, refreshToken?: string) => {
     setUser(u)
-    setAccessToken(token)
-    localStorage.setItem('betegna_auth', JSON.stringify({ user: u, accessToken: token }))
+    setAccessToken(accessToken)
+    localStorage.setItem('betegna_auth', JSON.stringify({ 
+      user: u, 
+      accessToken,
+      refreshToken 
+    }))
   }
 
   const login = async (data: { email: string; password: string }) => {
     const res = await api.post('/auth/login', data)
-    persist(res.data.user, res.data.accessToken)
+    persist(res.data.user, res.data.accessToken, res.data.refreshToken)
   }
 
   const signup = async (data: { name: string; email: string; password: string; role: Role }) => {
     const res = await api.post('/auth/register', data)
-    persist(res.data.user, res.data.accessToken)
+    persist(res.data.user, res.data.accessToken, res.data.refreshToken)
   }
 
   const logout = () => {
