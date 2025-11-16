@@ -1,0 +1,104 @@
+{
+  "appName": "Betegna",
+  "tagline": "Ethiopian Community Room & Space Sharing",
+  "nav": {
+    "home": "Home",
+    "rooms": "Rooms",
+    "myRooms": "My Rooms",
+    "profile": "My Profile",
+    "chat": "Chat",
+    "admin": "Admin",
+    "login": "Login",
+    "signup": "Sign up",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Find trusted Ethiopian roommates in the Gulf",
+    "subtitle": "Safe, culturally compatible rooms in Dubai, Abu Dhabi, Sharjah, and beyond.",
+    "ctaSeek": "I am looking for a room",
+    "ctaHost": "I am renting a room"
+  },
+  "auth": {
+    "loginTitle": "Login to Betegna",
+    "signupTitle": "Create your Betegna account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full name",
+    "role": "I am",
+    "tenant": "Looking for a room",
+    "owner": "Renting a room",
+    "both": "Both",
+    "submit": "Continue",
+    "haveAccount": "Already have an account? Login",
+    "noAccount": "Don't have an account? Sign up"
+  },
+  "filters": {
+    "title": "Filters",
+    "country": "Country",
+    "city": "City",
+    "area": "Area",
+    "minPrice": "Min price",
+    "maxPrice": "Max price",
+    "gender": "Preferred gender",
+    "religion": "Preferred religion",
+    "smoking": "Smoking",
+    "stayDuration": "Stay duration",
+    "amenities": "Amenities",
+    "shortStay": "Short stay allowed",
+    "apply": "Apply filters",
+    "reset": "Reset"
+  },
+  "rooms": {
+    "title": "Available rooms",
+    "noResults": "No rooms found. Try adjusting your filters.",
+    "perMonth": "per month",
+    "shortStay": "Short stay allowed",
+    "details": "View details",
+    "rating": "{{rating}} ({{count}} reviews)"
+  },
+  "roomDetail": {
+    "host": "Host",
+    "chatWithHost": "Chat with host",
+    "amenities": "Amenities",
+    "houseRules": "House rules",
+    "feedback": "Feedback & reviews"
+  },
+  "profile": {
+    "title": "My profile",
+    "save": "Save profile",
+    "languages": "Languages",
+    "occupation": "Occupation",
+    "cityCurrent": "Current city",
+    "preferences": "Roommate preferences",
+    "rating": "Rating"
+  },
+  "chat": {
+    "title": "Messages",
+    "typeMessage": "Type a message...",
+    "send": "Send"
+  },
+  "admin": {
+    "title": "Admin dashboard",
+    "users": "Users",
+    "rooms": "Listings",
+    "ads": "Ads",
+    "analytics": "Analytics"
+  },
+  "myRooms": {
+    "title": "My Room Listings",
+    "createNew": "Create New Room",
+    "noRooms": "No rooms yet",
+    "createFirst": "Start by creating your first room listing to connect with potential tenants."
+  },
+  "createRoom": {
+    "title": "Create Room Listing"
+  },
+  "lang": {
+    "en": "English",
+    "am": "Amharic",
+    "om": "Oromiffa",
+    "ti": "Tigrinya"
+  }
+}
+
+
