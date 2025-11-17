@@ -151,6 +151,27 @@ export function CreateRoomPage() {
     }))
   }
 
+  // Helper function to get default city for a country
+  const getDefaultCity = (country: string): string => {
+    const cityMap: Record<string, string> = {
+      'UAE': 'Dubai',
+      'KSA': 'Riyadh',
+      'QATAR': 'Doha',
+      'OMAN': 'Muscat',
+      'BAHRAIN': 'Manama',
+      'KUWAIT': 'Kuwait City',
+      'LEBANON': 'Beirut',
+      'YEMEN': "Sana'a",
+      'EGYPT': 'Cairo',
+    }
+    return cityMap[country] || 'Dubai'
+  }
+
+  const handleCountryChange = (country: string) => {
+    const defaultCity = getDefaultCity(country)
+    setFormData({ ...formData, country, city: defaultCity })
+  }
+
   if (!user) {
     return (
       <div className="card" style={{ maxWidth: 500, margin: '2rem auto', textAlign: 'center' }}>
@@ -194,7 +215,7 @@ export function CreateRoomPage() {
             <label>{t('filters.country')} *</label>
           <select
             value={formData.country}
-            onChange={(e) => setFormData({ ...formData, country: e.target.value, city: '' })}
+            onChange={(e) => handleCountryChange(e.target.value)}
             required
           >
             <option value="UAE">UAE</option>
