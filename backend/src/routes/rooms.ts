@@ -11,6 +11,7 @@ const roomSchema = z.object({
   country: z.string().min(1),
   city: z.string().min(1),
   area: z.string().min(1),
+  title: z.string().min(1).optional(),
   roomType: z.enum(["SHARED", "PRIVATE", "BED_SPACE"]),
   bedsTotal: z.number().int().min(1),
   bedsAvailable: z.number().int().min(0),
@@ -27,9 +28,10 @@ const roomSchema = z.object({
     .optional(),
   shortStayAllowed: z.boolean(),
   minStayMonths: z.number().int().min(0).optional(),
+  availableFrom: z.string().optional(), // ISO date string
   rules: z
     .object({
-      smoking: z.string().optional(),
+      smoking: z.enum(["NO", "OUTSIDE_ONLY", "ALLOWED"]).optional(),
       alcohol: z.string().optional(),
       visitors: z.string().optional(),
       quietHours: z.string().optional(),
@@ -38,8 +40,8 @@ const roomSchema = z.object({
     .optional(),
   preferences: z
     .object({
-      preferredGender: z.string().optional(),
-      preferredReligion: z.string().optional(),
+      preferredGender: z.enum(["MALE", "FEMALE", "ANY"]).optional(),
+      preferredReligion: z.enum(["ORTHODOX", "MUSLIM", "PROTESTANT", "ANY"]).optional(),
       preferredOccupation: z.string().optional(),
     })
     .partial()
@@ -47,6 +49,7 @@ const roomSchema = z.object({
   amenities: z.array(z.string()).optional(),
   photos: z.array(z.string()).optional(),
   description: z.string().optional(),
+  exactAddress: z.string().optional(), // Private field
   status: z.enum(["ACTIVE", "FULL", "ARCHIVED"]).optional(),
 });
 

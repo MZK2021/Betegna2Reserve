@@ -10,12 +10,15 @@ export function CreateRoomPage() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
+    title: '',
     country: 'UAE',
     city: 'Dubai',
     area: '',
+    exactAddress: '', // Private field
     roomType: 'PRIVATE',
     bedsTotal: '1',
     bedsAvailable: '1',
+    availableFrom: '', // ISO date string
     priceMonthly: '',
     depositAmount: '',
     shortStayAllowed: false,
@@ -30,10 +33,15 @@ export function CreateRoomPage() {
       gas: false,
     },
     rules: {
-      smoking: 'Not allowed',
+      smoking: 'NO',
       alcohol: 'Not allowed',
       visitors: 'Allowed',
       quietHours: '10 PM - 6 AM',
+    },
+    preferences: {
+      preferredGender: 'ANY' as 'MALE' | 'FEMALE' | 'ANY',
+      preferredReligion: 'ANY' as 'ORTHODOX' | 'MUSLIM' | 'PROTESTANT' | 'ANY',
+      preferredOccupation: '',
     },
   })
 
@@ -58,12 +66,15 @@ export function CreateRoomPage() {
     }
 
     const payload = {
+      title: formData.title || undefined,
       country: formData.country,
       city: formData.city,
       area: formData.area,
+      exactAddress: formData.exactAddress || undefined,
       roomType: formData.roomType,
       bedsTotal: Number(formData.bedsTotal),
       bedsAvailable: Number(formData.bedsAvailable),
+      availableFrom: formData.availableFrom || undefined,
       priceMonthly: Number(formData.priceMonthly),
       depositAmount: formData.depositAmount ? Number(formData.depositAmount) : undefined,
       shortStayAllowed: formData.shortStayAllowed,
@@ -72,7 +83,17 @@ export function CreateRoomPage() {
       amenities: formData.amenities.filter((a) => a),
       photos: formData.photos.filter((p) => p && p.length > 0),
       utilitiesIncluded: formData.utilitiesIncluded,
-      rules: formData.rules,
+      rules: {
+        smoking: formData.rules.smoking,
+        alcohol: formData.rules.alcohol,
+        visitors: formData.rules.visitors,
+        quietHours: formData.rules.quietHours,
+      },
+      preferences: {
+        preferredGender: formData.preferences.preferredGender,
+        preferredReligion: formData.preferences.preferredReligion,
+        preferredOccupation: formData.preferences.preferredOccupation || undefined,
+      },
     }
 
     console.log('Submitting room:', payload)
@@ -145,11 +166,32 @@ export function CreateRoomPage() {
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto' }}>
-      <h2 className="mb-4">{t('createRoom.title')}</h2>
+    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      <h2 className="mb-4" style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--deep-royal-blue)' }}>
+        {t('createRoom.title')}
+      </h2>
       <form onSubmit={handleSubmit} className="card">
-        <div className="form-field">
-          <label>{t('filters.country')} *</label>
+        {/* Section 1: Listing Basics */}
+        <div className="form-section">
+          <h3 className="form-section-title">📝 Listing Basics</h3>
+          <div className="form-field">
+            <label>Listing Title *</label>
+            <input
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              required
+              placeholder="e.g., Clean private room in Deira near Metro"
+              maxLength={100}
+            />
+            <small className="text-muted">A catchy title helps your listing stand out</small>
+          </div>
+        </div>
+
+        {/* Section 2: Location */}
+        <div className="form-section">
+          <h3 className="form-section-title">📍 Location</h3>
+          <div className="form-field">
+            <label>{t('filters.country')} *</label>
           <select
             value={formData.country}
             onChange={(e) => setFormData({ ...formData, country: e.target.value, city: '' })}
@@ -215,7 +257,21 @@ export function CreateRoomPage() {
         </div>
 
         <div className="form-field">
-          <label>Room Type *</label>
+          <label>Exact Address (Private)</label>
+          <input
+            value={formData.exactAddress}
+            onChange={(e) => setFormData({ ...formData, exactAddress: e.target.value })}
+            placeholder="Full address - only visible to you and matched tenants"
+          />
+          <small className="text-muted">This will not be shown publicly, only to matched tenants</small>
+        </div>
+        </div>
+
+        {/* Section 3: Room Details */}
+        <div className="form-section">
+          <h3 className="form-section-title">🛏️ Room Details</h3>
+          <div className="form-field">
+            <label>Room Type *</label>
           <select
             value={formData.roomType}
             onChange={(e) => setFormData({ ...formData, roomType: e.target.value })}
@@ -250,7 +306,23 @@ export function CreateRoomPage() {
         </div>
 
         <div className="form-field">
-          <label>Monthly Rent (AED) *</label>
+          <label>Available From *</label>
+          <input
+            type="date"
+            value={formData.availableFrom}
+            onChange={(e) => setFormData({ ...formData, availableFrom: e.target.value })}
+            required
+            min={new Date().toISOString().split('T')[0]}
+          />
+          <small className="text-muted">When will this room be available for move-in?</small>
+        </div>
+        </div>
+
+        {/* Section 4: Price & Stay */}
+        <div className="form-section">
+          <h3 className="form-section-title">💰 Price & Stay</h3>
+          <div className="form-field">
+            <label>Monthly Rent (AED) *</label>
           <input
             type="number"
             min="0"
@@ -290,113 +362,104 @@ export function CreateRoomPage() {
             onChange={(e) => setFormData({ ...formData, minStayMonths: e.target.value })}
           />
         </div>
-
-        <div className="form-field">
-          <label>Description</label>
-          <textarea
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            rows={4}
-            placeholder="Describe your room, location, nearby amenities..."
-          />
         </div>
 
-        <div className="form-field">
-          <label>Room Photos</label>
-          <p className="text-sm text-muted" style={{ marginBottom: '0.5rem' }}>
-            Upload up to 3 images of your room (minimum 1 recommended)
-          </p>
-          
-          <div style={{ marginBottom: '1rem' }}>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handlePhotoUpload}
-              id="photo-upload"
-              style={{ display: 'none' }}
-              disabled={formData.photos.length >= 3}
-            />
-            <label htmlFor="photo-upload">
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={(e) => {
-                  e.preventDefault()
-                  document.getElementById('photo-upload')?.click()
-                }}
-                disabled={formData.photos.length >= 3}
-                style={{ 
-                  cursor: formData.photos.length >= 3 ? 'not-allowed' : 'pointer',
-                  width: '100%',
-                  padding: '0.875rem 1.5rem',
-                  fontSize: '1rem',
-                  fontWeight: 600
-                }}
-              >
-                {formData.photos.length >= 3 
-                  ? '📷 Maximum 3 images reached' 
-                  : `📷 Upload Images (${formData.photos.length}/3)`}
-              </button>
-            </label>
-          </div>
-
-          {formData.photos.length > 0 && (
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', 
-              gap: '1rem',
-              marginTop: '1rem'
-            }} className="photo-grid">
-              {formData.photos.map((photo, index) => (
-                <div key={index} style={{ position: 'relative' }}>
-                  <img
-                    src={photo}
-                    alt={`Room photo ${index + 1}`}
-                    style={{
-                      width: '100%',
-                      height: '200px',
-                      objectFit: 'cover',
-                      borderRadius: '8px',
-                      border: '1px solid #ddd',
-                    }}
+        {/* Section 5: Roommate Preferences */}
+        <div className="form-section">
+          <h3 className="form-section-title">👥 Roommate Preferences</h3>
+          <div className="form-field">
+            <label>Preferred Gender *</label>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              {[
+                { value: 'ANY', label: 'Either' },
+                { value: 'FEMALE', label: 'Female only' },
+                { value: 'MALE', label: 'Male only' },
+              ].map((option) => (
+                <label key={option.value} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                  <input
+                    type="radio"
+                    name="preferredGender"
+                    value={option.value}
+                    checked={formData.preferences.preferredGender === option.value}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      preferences: { ...formData.preferences, preferredGender: e.target.value as 'MALE' | 'FEMALE' | 'ANY' }
+                    })}
+                    required
                   />
-                  <button
-                    type="button"
-                    onClick={() => removePhoto(index)}
-                    className="btn-secondary"
-                    style={{
-                      position: 'absolute',
-                      top: '0.5rem',
-                      right: '0.5rem',
-                      padding: '0.25rem 0.5rem',
-                      fontSize: '0.75rem',
-                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    }}
-                  >
-                    ✕ Remove
-                  </button>
-                </div>
+                  {option.label}
+                </label>
               ))}
             </div>
-          )}
-        </div>
+          </div>
 
-        <div className="form-field">
-          <label>Amenities</label>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-            {['Wi-Fi', 'AC', 'Laundry', 'Parking', 'Furnished'].map((amenity) => (
-              <label key={amenity} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <input
-                  type="checkbox"
-                  checked={formData.amenities.includes(amenity)}
-                  onChange={() => toggleAmenity(amenity)}
-                />
-                {amenity}
-              </label>
-            ))}
+          <div className="form-field">
+            <label>Religion Preference</label>
+            <select
+              value={formData.preferences.preferredReligion}
+              onChange={(e) => setFormData({
+                ...formData,
+                preferences: { ...formData.preferences, preferredReligion: e.target.value as 'ORTHODOX' | 'MUSLIM' | 'PROTESTANT' | 'ANY' }
+              })}
+            >
+              <option value="ANY">Any</option>
+              <option value="ORTHODOX">Orthodox</option>
+              <option value="MUSLIM">Muslim</option>
+              <option value="PROTESTANT">Protestant</option>
+            </select>
+          </div>
+
+          <div className="form-field">
+            <label>Smoking Rules *</label>
+            <select
+              value={formData.rules.smoking}
+              onChange={(e) => setFormData({
+                ...formData,
+                rules: { ...formData.rules, smoking: e.target.value }
+              })}
+              required
+            >
+              <option value="NO">No smoking</option>
+              <option value="OUTSIDE_ONLY">Smoking outside only</option>
+              <option value="ALLOWED">Smoking allowed</option>
+            </select>
+          </div>
+
+          <div className="form-field">
+            <label>Visitors Rules</label>
+            <select
+              value={formData.rules.visitors}
+              onChange={(e) => setFormData({
+                ...formData,
+                rules: { ...formData.rules, visitors: e.target.value }
+              })}
+            >
+              <option value="Allowed">Visitors allowed</option>
+              <option value="Limited">Limited visitors</option>
+              <option value="Not allowed">No visitors</option>
+              <option value="Women only">Women-only visitors</option>
+            </select>
           </div>
         </div>
+
+        {/* Section 6: Amenities & Utilities */}
+        <div className="form-section">
+          <h3 className="form-section-title">✨ Amenities & Utilities</h3>
+          <div className="form-field">
+            <label>Amenities</label>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {['Wi-Fi', 'AC', 'Laundry', 'Parking', 'Furnished'].map((amenity) => (
+                <label key={amenity} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <input
+                    type="checkbox"
+                    checked={formData.amenities.includes(amenity)}
+                    onChange={() => toggleAmenity(amenity)}
+                  />
+                  {amenity}
+                </label>
+              ))}
+            </div>
+          </div>
 
         <div className="form-field">
           <label>Utilities Included</label>
@@ -419,6 +482,102 @@ export function CreateRoomPage() {
                 {util.charAt(0).toUpperCase() + util.slice(1)}
               </label>
             ))}
+          </div>
+        </div>
+        </div>
+
+        {/* Section 7: Photos & Description */}
+        <div className="form-section">
+          <h3 className="form-section-title">📷 Photos & Description</h3>
+          <div className="form-field">
+            <label>Description</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              rows={4}
+              placeholder="Describe your room, location, nearby amenities..."
+            />
+          </div>
+
+          <div className="form-field">
+            <label>Room Photos</label>
+            <p className="text-sm text-muted" style={{ marginBottom: '0.5rem' }}>
+              Upload up to 3 images of your room (minimum 1 recommended)
+            </p>
+            
+            <div style={{ marginBottom: '1rem' }}>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handlePhotoUpload}
+                id="photo-upload"
+                style={{ display: 'none' }}
+                disabled={formData.photos.length >= 3}
+              />
+              <label htmlFor="photo-upload">
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    document.getElementById('photo-upload')?.click()
+                  }}
+                  disabled={formData.photos.length >= 3}
+                  style={{ 
+                    cursor: formData.photos.length >= 3 ? 'not-allowed' : 'pointer',
+                    width: '100%',
+                    padding: '0.875rem 1.5rem',
+                    fontSize: '1rem',
+                    fontWeight: 600
+                  }}
+                >
+                  {formData.photos.length >= 3 
+                    ? '📷 Maximum 3 images reached' 
+                    : `📷 Upload Images (${formData.photos.length}/3)`}
+                </button>
+              </label>
+            </div>
+
+            {formData.photos.length > 0 && (
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', 
+                gap: '1rem',
+                marginTop: '1rem'
+              }} className="photo-grid">
+                {formData.photos.map((photo, index) => (
+                  <div key={index} style={{ position: 'relative' }}>
+                    <img
+                      src={photo}
+                      alt={`Room photo ${index + 1}`}
+                      style={{
+                        width: '100%',
+                        height: '200px',
+                        objectFit: 'cover',
+                        borderRadius: '8px',
+                        border: '1px solid #ddd',
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removePhoto(index)}
+                      className="btn-secondary"
+                      style={{
+                        position: 'absolute',
+                        top: '0.5rem',
+                        right: '0.5rem',
+                        padding: '0.25rem 0.5rem',
+                        fontSize: '0.75rem',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                      }}
+                    >
+                      ✕ Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

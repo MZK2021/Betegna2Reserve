@@ -10,6 +10,7 @@ interface Room {
   country: string
   city: string
   area: string
+  title?: string
   priceMonthly: number
   shortStayAllowed: boolean
   ratingAvg?: number
@@ -218,27 +219,30 @@ export function RoomsPage() {
                   )}
                   <div className="room-card-content">
                     <div className="room-card-title">
-                      🏠 {room.city}, {room.area}
+                      🏠 {room.title || `${room.city}, ${room.area}`}
                     </div>
                     <div className="room-card-meta">
                       📍 {room.country} • {room.roomType || 'Room'}
+                      {room.title && <span style={{ display: 'block', marginTop: '0.25rem', fontSize: '0.875rem', color: 'var(--gray-600)' }}>
+                        {room.city}, {room.area}
+                      </span>}
                     </div>
                     
                     {/* Preference Icons */}
                     <div className="room-card-preferences">
-                      {room.preferences?.preferredGender && room.preferences.preferredGender !== 'Any' && (
-                        <span className="preference-icon" title={`Preferred: ${room.preferences.preferredGender}`}>
-                          {room.preferences.preferredGender === 'Female' ? '👩' : room.preferences.preferredGender === 'Male' ? '👨' : '👥'}
+                      {room.preferences?.preferredGender && room.preferences.preferredGender !== 'ANY' && (
+                        <span className="preference-icon" title={`Preferred: ${room.preferences.preferredGender === 'FEMALE' ? 'Female only' : 'Male only'}`}>
+                          {room.preferences.preferredGender === 'FEMALE' ? '👩' : room.preferences.preferredGender === 'MALE' ? '👨' : '👥'}
                         </span>
                       )}
-                      {room.preferences?.preferredReligion && room.preferences.preferredReligion !== 'Any' && (
+                      {room.preferences?.preferredReligion && room.preferences.preferredReligion !== 'ANY' && (
                         <span className="preference-icon" title={`Religion: ${room.preferences.preferredReligion}`}>
                           🕌
                         </span>
                       )}
                       {room.rules?.smoking && (
-                        <span className="preference-icon" title={`Smoking: ${room.rules.smoking}`}>
-                          {room.rules.smoking === 'Not allowed' ? '🚭' : room.rules.smoking === 'Outside only' ? '🚬' : '✅'}
+                        <span className="preference-icon" title={`Smoking: ${room.rules.smoking === 'NO' ? 'Not allowed' : room.rules.smoking === 'OUTSIDE_ONLY' ? 'Outside only' : 'Allowed'}`}>
+                          {room.rules.smoking === 'NO' ? '🚭' : room.rules.smoking === 'OUTSIDE_ONLY' ? '🚬' : '✅'}
                         </span>
                       )}
                     </div>

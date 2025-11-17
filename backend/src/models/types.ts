@@ -37,6 +37,7 @@ export interface Room {
   country: string;
   city: string;
   area: string;
+  title?: string; // Listing title
   roomType: "SHARED" | "PRIVATE" | "BED_SPACE";
   bedsTotal: number;
   bedsAvailable: number;
@@ -50,6 +51,7 @@ export interface Room {
   };
   shortStayAllowed: boolean;
   minStayMonths?: number;
+  availableFrom?: string; // ISO date string
   rules?: {
     smoking?: string;
     alcohol?: string;
@@ -57,13 +59,14 @@ export interface Room {
     quietHours?: string;
   };
   preferences?: {
-    preferredGender?: string;
-    preferredReligion?: string;
+    preferredGender?: "MALE" | "FEMALE" | "ANY";
+    preferredReligion?: "ORTHODOX" | "MUSLIM" | "PROTESTANT" | "ANY";
     preferredOccupation?: string;
   };
   amenities?: string[];
   photos?: string[];
   description?: string;
+  exactAddress?: string; // Private field, not shown publicly
   status: "ACTIVE" | "FULL" | "ARCHIVED";
   ratingAvg?: number;
   ratingCount?: number;
