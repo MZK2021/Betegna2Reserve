@@ -57,19 +57,21 @@ function Header() {
 
   return (
     <header>
-      <div className="container flex items-center justify-between" style={{ padding: '1rem 0' }}>
-        <Link to="/" className="logo-text">
-          {t('appName')}
-        </Link>
-        
-        {/* Mobile Menu Button */}
-        <button 
-          className="mobile-menu-btn"
-          onClick={() => setShowMobileMenu(!showMobileMenu)}
-          aria-label="Toggle menu"
-        >
-          ☰
-        </button>
+      <div className="container header-inner" style={{ padding: '1rem 0' }}>
+        <div className="header-brand">
+          <Link to="/" className="logo-text">
+            {t('appName')}
+          </Link>
+          
+          {/* Mobile Menu Button */}
+          <button 
+            className="mobile-menu-btn"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            aria-label="Toggle menu"
+          >
+            ☰
+          </button>
+        </div>
         
         <nav className={`nav-links ${showMobileMenu ? 'nav-links-open' : ''}`}>
           <Link to="/rooms">🏠 {t('nav.rooms')}</Link>
@@ -81,7 +83,7 @@ function Header() {
           {user?.role === 'ADMIN' && <Link to="/admin">{t('nav.admin')}</Link>}
         </nav>
         
-        <div className="flex items-center gap-2" style={{ flexWrap: 'wrap' }}>
+        <div className="header-actions flex items-center gap-2" style={{ flexWrap: 'wrap' }}>
           <div className="lang-select-wrapper">
             <select
               className="lang-select"
@@ -97,10 +99,10 @@ function Header() {
           
           {!user && (
             <>
-              <Link to="/login" className="btn-secondary" style={{ whiteSpace: 'nowrap' }}>
+              <Link to="/login" className="btn-secondary header-login-btn" style={{ whiteSpace: 'nowrap' }}>
                 {t('nav.login')}
               </Link>
-              <Link to="/signup" className="btn-primary" style={{ whiteSpace: 'nowrap' }}>
+              <Link to="/signup" className="btn-primary header-signup-btn" style={{ whiteSpace: 'nowrap' }}>
                 {t('nav.signup')}
               </Link>
             </>
