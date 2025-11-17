@@ -16,17 +16,17 @@ const bannerItems: BannerItem[] = [
   { 
     text: 'Do you need Lyft/Car?', 
     service: 'car',
-    backgroundImage: '/images/banner-car.jpg'
+    backgroundImage: '/images/Car%20Lyft.jpg'
   },
   { 
     text: 'Do you need Business Connection?', 
     service: 'business',
-    backgroundImage: '/images/banner-business.jpg'
+    backgroundImage: '/images/business.jpg'
   },
   { 
     text: 'Do you Need INJERA, BERBERE, SHERO?', 
     service: 'grocery',
-    backgroundImage: '/images/banner-grocery.jpg'
+    backgroundImage: '/images/injera.jpg'
   }
 ]
 
