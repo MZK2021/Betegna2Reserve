@@ -17,6 +17,13 @@ interface Room {
   roomType?: string
   photos?: string[]
   amenities?: string[]
+  preferences?: {
+    preferredGender?: string
+    preferredReligion?: string
+  }
+  rules?: {
+    smoking?: string
+  }
 }
 
 interface RoomsResponse {
@@ -211,16 +218,39 @@ export function RoomsPage() {
                   )}
                   <div className="room-card-content">
                     <div className="room-card-title">
-                      {room.city}, {room.area}
+                      🏠 {room.city}, {room.area}
                     </div>
                     <div className="room-card-meta">
-                      {room.country} • {room.roomType || 'Room'}
+                      📍 {room.country} • {room.roomType || 'Room'}
                     </div>
+                    
+                    {/* Preference Icons */}
+                    <div className="room-card-preferences">
+                      {room.preferences?.preferredGender && room.preferences.preferredGender !== 'Any' && (
+                        <span className="preference-icon" title={`Preferred: ${room.preferences.preferredGender}`}>
+                          {room.preferences.preferredGender === 'Female' ? '👩' : room.preferences.preferredGender === 'Male' ? '👨' : '👥'}
+                        </span>
+                      )}
+                      {room.preferences?.preferredReligion && room.preferences.preferredReligion !== 'Any' && (
+                        <span className="preference-icon" title={`Religion: ${room.preferences.preferredReligion}`}>
+                          🕌
+                        </span>
+                      )}
+                      {room.rules?.smoking && (
+                        <span className="preference-icon" title={`Smoking: ${room.rules.smoking}`}>
+                          {room.rules.smoking === 'Not allowed' ? '🚭' : room.rules.smoking === 'Outside only' ? '🚬' : '✅'}
+                        </span>
+                      )}
+                    </div>
+                    
                     {room.amenities && room.amenities.length > 0 && (
                       <div className="room-card-amenities">
                         {room.amenities.slice(0, 3).map((amenity, idx) => (
-                          <span key={idx}>{amenity}</span>
+                          <span key={idx} className="amenity-tag">{amenity}</span>
                         ))}
+                        {room.amenities.length > 3 && (
+                          <span className="amenity-tag">+{room.amenities.length - 3}</span>
+                        )}
                       </div>
                     )}
                     {room.ratingAvg && (
@@ -228,8 +258,20 @@ export function RoomsPage() {
                         ⭐ {room.ratingAvg.toFixed(1)} <span style={{ color: 'var(--gray-600)', fontWeight: 'normal' }}>({room.ratingCount ?? 0} reviews)</span>
                       </div>
                     )}
-                    <div className="room-card-price">
-                      {room.priceMonthly} AED <span className="text-sm text-muted">{t('rooms.perMonth')}</span>
+                    <div className="room-card-footer">
+                      <div className="room-card-price">
+                        {room.priceMonthly} AED <span className="text-sm text-muted">{t('rooms.perMonth')}</span>
+                      </div>
+                      <button 
+                        className="btn-primary"
+                        style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          window.location.href = `/rooms/${room.id}`
+                        }}
+                      >
+                        View Details
+                      </button>
                     </div>
                   </div>
                 </Link>

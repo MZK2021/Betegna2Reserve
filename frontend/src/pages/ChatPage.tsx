@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { api } from '../api/client'
@@ -36,6 +36,9 @@ export function ChatPage() {
     refetchInterval: 5000
   })
 
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const chatMessagesRef = useRef<HTMLDivElement>(null)
+
   const { data: messages } = useQuery({
     queryKey: ['messages', activeConversationId],
     enabled: !!activeConversationId,
@@ -47,6 +50,13 @@ export function ChatPage() {
     },
     refetchInterval: 3000
   })
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [messages])
 
   const sendMutation = useMutation({
     mutationFn: async () => {
@@ -71,89 +81,115 @@ export function ChatPage() {
   return (
     <div className="chat-layout">
       <div className="chat-sidebar">
-        <h3 className="mb-2">{t('chat.title')}</h3>
-        {!conversations || conversations.length === 0 ? (
-          <div className="text-sm text-muted">No conversations yet</div>
-        ) : (
-          conversations.map((c) => (
-            <button
-              key={c.id}
-              className="full-width text-left"
-              style={{
-                padding: '0.4rem 0.5rem',
-                borderRadius: 6,
-                border: 'none',
-                background: c.id === activeConversationId ? '#e5e7eb' : 'transparent',
-                cursor: 'pointer'
-              }}
-              onClick={() => setActiveConversationId(c.id)}
-            >
-              <div className="text-sm">Conversation</div>
-              {c.lastMessageAt && (
-                <div className="text-xs text-muted">
-                  {new Date(c.lastMessageAt).toLocaleTimeString()}
+        <div className="chat-sidebar-header">
+          <h3>💬 {t('chat.title')}</h3>
+          <input
+            type="text"
+            placeholder="🔍 Search conversations..."
+            className="chat-search"
+          />
+        </div>
+        <div className="chat-conversations-list">
+          {!conversations || conversations.length === 0 ? (
+            <div className="chat-empty-state">
+              <div className="text-muted">No conversations yet</div>
+              <div className="text-xs text-muted mt-2">Start a conversation from a room listing</div>
+            </div>
+          ) : (
+            conversations.map((c) => (
+              <button
+                key={c.id}
+                className={`chat-conversation-item ${c.id === activeConversationId ? 'active' : ''}`}
+                onClick={() => setActiveConversationId(c.id)}
+              >
+                <div className="chat-avatar">👤</div>
+                <div className="chat-conversation-info">
+                  <div className="chat-conversation-name">Conversation</div>
+                  {c.lastMessageAt && (
+                    <div className="chat-conversation-time">
+                      {new Date(c.lastMessageAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  )}
                 </div>
-              )}
-            </button>
-          ))
-        )}
+              </button>
+            ))
+          )}
+        </div>
       </div>
       <div className="chat-pane">
-        <div className="chat-messages">
-          {!activeConversationId && (
-            <div className="text-sm text-muted">Select a conversation to start chatting.</div>
-          )}
-          {activeConversationId && !messages && (
-            <div className="text-sm text-muted">Loading messages...</div>
-          )}
-          {activeConversationId && messages && (
-            <>
-              {messages.map((m) => (
-                <div
-                  key={m.id}
-                  style={{
-                    marginBottom: '0.4rem',
-                    textAlign: m.senderId === user?.id ? 'right' : 'left'
-                  }}
-                >
-                  <span
-                    className="text-sm"
-                    style={{
-                      display: 'inline-block',
-                      padding: '0.35rem 0.6rem',
-                      borderRadius: 12,
-                      background: m.senderId === user?.id ? '#111827' : '#e5e7eb',
-                      color: m.senderId === user?.id ? '#f9fafb' : '#111827'
-                    }}
-                  >
-                    {m.text}
-                  </span>
+        {!activeConversationId ? (
+          <div className="chat-welcome">
+            <div className="chat-welcome-icon">💬</div>
+            <h3>Welcome to Chat</h3>
+            <p className="text-muted">Select a conversation to start chatting</p>
+          </div>
+        ) : (
+          <>
+            <div className="chat-header">
+              <div className="chat-header-info">
+                <div className="chat-avatar">👤</div>
+                <div>
+                  <div className="chat-header-name">Conversation</div>
+                  <div className="chat-header-status">Online</div>
                 </div>
-              ))}
-            </>
-          )}
-        </div>
-        <div className="chat-input-row">
-          <input
-            className="full-width"
-            placeholder={t('chat.typeMessage') ?? 'Type a message...'}
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' && !sendMutation.isPending) {
-                sendMutation.mutate()
-              }
-            }}
-          />
-          <button
-            className="btn-primary"
-            disabled={!activeConversationId || sendMutation.isPending}
-            onClick={() => sendMutation.mutate()}
-          >
-            {t('chat.send')}
-          </button>
-        </div>
-        <div className="mt-4">
+              </div>
+            </div>
+            <div className="chat-messages" id="chat-messages" ref={chatMessagesRef}>
+              {!messages && (
+                <div className="chat-loading">Loading messages...</div>
+              )}
+              {messages && messages.length === 0 && (
+                <div className="chat-empty-messages">
+                  <p>No messages yet. Start the conversation!</p>
+                </div>
+              )}
+              {messages && messages.map((m) => {
+                const isOwn = m.senderId === user?.id
+                return (
+                  <div
+                    key={m.id}
+                    className={`chat-message ${isOwn ? 'chat-message-own' : 'chat-message-other'}`}
+                  >
+                    <div className="chat-message-bubble">
+                      <div className="chat-message-text">{m.text}</div>
+                      <div className="chat-message-time">
+                        {new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+              <div ref={messagesEndRef} />
+            </div>
+            <div className="chat-input-container">
+              <div className="chat-input-actions">
+                <button className="chat-input-icon" title="Send photo">📷</button>
+                <button className="chat-input-icon" title="Emoji">😊</button>
+                <button className="chat-input-icon" title="Attachment">📎</button>
+              </div>
+              <input
+                className="chat-input"
+                placeholder={t('chat.typeMessage') ?? 'Type a message...'}
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && !sendMutation.isPending) {
+                    sendMutation.mutate()
+                  }
+                }}
+              />
+              <button
+                className="chat-send-btn"
+                disabled={!draft.trim() || sendMutation.isPending}
+                onClick={() => sendMutation.mutate()}
+                title="Send"
+              >
+                ➤
+              </button>
+            </div>
+          </>
+        )}
+        <div className="chat-ad-container">
           <AdBanner position="CHAT_BOTTOM" />
         </div>
       </div>
