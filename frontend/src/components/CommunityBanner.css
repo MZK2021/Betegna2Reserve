@@ -1,73 +1,90 @@
 .community-banner {
-  background: var(--gradient-koamaru-metallic);
-  border-radius: 12px;
-  padding: 0;
-  overflow: hidden;
-  box-shadow: var(--shadow-brand-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
   margin: 2rem 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .community-banner-item {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--glass-bg-dark);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
   display: flex;
   align-items: center;
-  transition: all 0.3s;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
-}
-
-.community-banner-item:last-child {
-  border-bottom: none;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  min-height: 120px;
 }
 
 .community-banner-item::before {
   content: '';
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
+  right: 0;
   bottom: 0;
-  width: 0;
-  background: var(--tangerine-yellow);
-  transition: width 0.3s;
+  background: var(--gradient-sky);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .community-banner-item:hover {
-  background: var(--gradient-koamaru-light);
-  padding-left: 2rem;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(10, 26, 79, 0.4), var(--glow-blue);
+  border-color: rgba(255, 204, 51, 0.5);
 }
 
 .community-banner-item:hover::before {
-  width: 4px;
+  opacity: 0.15;
 }
 
 .community-banner-text {
   color: #ffffff;
   font-weight: 700;
   font-size: 1.1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.01em;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
+  .community-banner {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
   .community-banner-item {
-    padding: 1rem 1.25rem;
+    padding: 1.5rem 1.25rem;
+    min-height: 100px;
   }
   
   .community-banner-text {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
+  .community-banner {
+    gap: 0.875rem;
+  }
+  
   .community-banner-item {
-    padding: 0.875rem 1rem;
+    padding: 1.25rem 1rem;
+    min-height: 90px;
   }
   
   .community-banner-text {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 }
 

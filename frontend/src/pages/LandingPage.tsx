@@ -21,8 +21,8 @@ export function LandingPage() {
   return (
     <div>
       <div className="hero">
-        <div style={{ maxWidth: '800px' }}>
-          <h1 className="hero-title">{t('hero.title')}</h1>
+        <div style={{ maxWidth: '900px', position: 'relative', zIndex: 1 }}>
+          <h1 className="hero-title" lang="am">{t('hero.title')}</h1>
           <p className="hero-subtitle">{t('hero.subtitle')}</p>
           <div className="hero-actions">
             <button className="btn-primary" onClick={() => navigate('/rooms')}>

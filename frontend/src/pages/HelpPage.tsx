@@ -55,12 +55,13 @@ export function HelpPage() {
         </p>
         
         <div style={{
-          background: 'var(--gradient-koamaru-light)',
+          background: 'var(--gradient-hero)',
           padding: '1.5rem',
-          borderRadius: '8px',
-          border: '1px solid var(--deep-koamaru)',
+          borderRadius: '16px',
+          border: '1px solid var(--deep-royal-blue)',
           marginBottom: '1.5rem',
-          color: 'var(--white)'
+          color: 'var(--white)',
+          boxShadow: 'var(--shadow-brand-lg)'
         }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--white)' }}>
             Contact Us - Let's Help You
@@ -95,9 +96,9 @@ export function HelpPage() {
               display: 'inline-flex', 
               alignItems: 'center', 
               gap: '0.5rem',
-              background: 'var(--tangerine-yellow)',
-              color: 'var(--deep-black)',
-              borderColor: 'var(--tangerine-yellow)'
+              background: 'var(--gold-accent)',
+              color: 'var(--midnight-navy)',
+              borderColor: 'var(--gold-accent)'
             }}
           >
             💬 WhatsApp

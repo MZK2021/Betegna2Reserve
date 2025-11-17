@@ -7,9 +7,9 @@ interface BannerItem {
 }
 
 const bannerItems: BannerItem[] = [
-  { text: 'you need VISA → TURKEY, EUROPE?', service: 'visa' },
-  { text: 'Do you need CAR LYFT?', service: 'car' },
-  { text: 'Do you need BUSINESS CONNECTION?', service: 'business' },
+  { text: 'You need VISA → TURKEY, EUROPE?', service: 'visa' },
+  { text: 'Do you need Lyft/Car?', service: 'car' },
+  { text: 'Do you need Business Connection?', service: 'business' },
   { text: 'Do you Need INJERA, BERBERE, SHERO?', service: 'grocery' }
 ]
 
