@@ -1,0 +1,125 @@
+.footer {
+  background: var(--soft-off-white);
+  border-top: 1px solid var(--gray-200);
+  margin-top: 4rem;
+  padding: 3rem 0 1.5rem;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footer-logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--deep-royal-blue);
+  text-decoration: none;
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-tagline {
+  font-size: 0.9rem;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+.footer-heading {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gray-900);
+  margin: 0 0 0.5rem 0;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-links a {
+  color: var(--gray-600);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-links a:hover {
+  color: var(--deep-royal-blue);
+}
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icon {
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.social-icon:hover {
+  transform: scale(1.2);
+}
+
+.footer-lang-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--gray-900);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.footer-lang-select:hover {
+  border-color: var(--deep-royal-blue);
+}
+
+.footer-lang-select:focus {
+  outline: none;
+  border-color: var(--deep-royal-blue);
+  box-shadow: 0 0 0 3px var(--primary-lighter);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--gray-200);
+  color: var(--gray-600);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .footer-social {
+    justify-content: flex-start;
+  }
+}
+

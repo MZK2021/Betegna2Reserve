@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import './App.css'
@@ -12,6 +13,7 @@ import { AdminPage } from './pages/AdminPage'
 import { MyRoomsPage } from './pages/MyRoomsPage'
 import { CreateRoomPage } from './pages/CreateRoomPage'
 import { HelpPage } from './pages/HelpPage'
+import { Footer } from './components/Footer'
 import { useAuth } from './hooks/useAuth'
 
 type ProtectedProps = {
@@ -35,6 +37,23 @@ function ProtectedRoute({ children, roles }: ProtectedProps) {
 function Header() {
   const { t, i18n } = useTranslation()
   const { user, logout } = useAuth()
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (!target.closest('.profile-dropdown-wrapper')) {
+        setShowProfileDropdown(false)
+      }
+      if (!target.closest('.nav-links') && !target.closest('.mobile-menu-btn')) {
+        setShowMobileMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
     <header>
@@ -42,27 +61,40 @@ function Header() {
         <Link to="/" className="logo-text">
           {t('appName')}
         </Link>
-        <nav className="nav-links">
-          <Link to="/rooms">{t('nav.rooms')}</Link>
+        
+        {/* Mobile Menu Button */}
+        <button 
+          className="mobile-menu-btn"
+          onClick={() => setShowMobileMenu(!showMobileMenu)}
+          aria-label="Toggle menu"
+        >
+          ☰
+        </button>
+        
+        <nav className={`nav-links ${showMobileMenu ? 'nav-links-open' : ''}`}>
+          <Link to="/rooms">🏠 {t('nav.rooms')}</Link>
           {user && (user.role === 'OWNER' || user.role === 'BOTH') && (
-            <Link to="/my-rooms">{t('nav.myRooms')}</Link>
+            <Link to="/my-rooms">🛏️ {t('nav.myRooms')}</Link>
           )}
-          {user && <Link to="/profile">{t('nav.profile')}</Link>}
-          {user && <Link to="/chat">{t('nav.chat')}</Link>}
+          {user && <Link to="/profile">👤 {t('nav.profile')}</Link>}
+          {user && <Link to="/chat">💬 {t('nav.chat')}</Link>}
           {user?.role === 'ADMIN' && <Link to="/admin">{t('nav.admin')}</Link>}
         </nav>
+        
         <div className="flex items-center gap-2" style={{ flexWrap: 'wrap' }}>
-          <select
-            className="lang-select"
-            value={i18n.language}
-            onChange={(e) => i18n.changeLanguage(e.target.value)}
-            style={{ minWidth: '100px' }}
-          >
-            <option value="en">{t('lang.en')}</option>
-            <option value="am">{t('lang.am')}</option>
-            <option value="om">{t('lang.om')}</option>
-            <option value="ti">{t('lang.ti')}</option>
-          </select>
+          <div className="lang-select-wrapper">
+            <select
+              className="lang-select"
+              value={i18n.language}
+              onChange={(e) => i18n.changeLanguage(e.target.value)}
+            >
+              <option value="en">🌐 {t('lang.en')}</option>
+              <option value="am">🌐 {t('lang.am')}</option>
+              <option value="om">🌐 {t('lang.om')}</option>
+              <option value="ti">🌐 {t('lang.ti')}</option>
+            </select>
+          </div>
+          
           {!user && (
             <>
               <Link to="/login" className="btn-secondary" style={{ whiteSpace: 'nowrap' }}>
@@ -73,10 +105,30 @@ function Header() {
               </Link>
             </>
           )}
+          
           {user && (
-            <button className="btn-secondary" onClick={logout} style={{ whiteSpace: 'nowrap' }}>
-              {t('nav.logout')}
-            </button>
+            <div className="profile-dropdown-wrapper">
+              <button 
+                className="profile-icon-btn"
+                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                aria-label="Profile menu"
+              >
+                👤
+              </button>
+              {showProfileDropdown && (
+                <div className="profile-dropdown">
+                  <Link to="/profile" onClick={() => setShowProfileDropdown(false)}>
+                    👤 View Profile
+                  </Link>
+                  <Link to="/profile" onClick={() => setShowProfileDropdown(false)}>
+                    ⚙️ Settings
+                  </Link>
+                  <button onClick={() => { logout(); setShowProfileDropdown(false); }}>
+                    🚪 {t('nav.logout')}
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -88,7 +140,7 @@ function App() {
   return (
     <div className="app-root">
       <Header />
-      <main className="container py-4">
+      <main className="container py-4" style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -138,6 +190,7 @@ function App() {
           <Route path="/help" element={<HelpPage />} />
         </Routes>
       </main>
+      <Footer />
     </div>
   )
 }
