@@ -338,10 +338,10 @@ export function CreateRoomPage() {
           {formData.photos.length > 0 && (
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', 
               gap: '1rem',
               marginTop: '1rem'
-            }}>
+            }} className="photo-grid">
               {formData.photos.map((photo, index) => (
                 <div key={index} style={{ position: 'relative' }}>
                   <img

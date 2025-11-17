@@ -83,13 +83,27 @@ export function RoomDetailPage() {
           </div>
           <p className="mt-4 text-sm text-muted">{room.description}</p>
           {room.photos && room.photos.length > 0 && (
-            <div className="mt-4" style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto' }}>
-              {room.photos.map((url) => (
+            <div className="mt-4" style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+              gap: '1rem'
+            }}>
+              {room.photos.map((url, idx) => (
                 <img
-                  key={url}
+                  key={idx}
                   src={url}
-                  alt="Room"
-                  style={{ width: 120, height: 80, borderRadius: 8, objectFit: 'cover' }}
+                  alt={`Room photo ${idx + 1}`}
+                  style={{ 
+                    width: '100%', 
+                    height: '150px', 
+                    borderRadius: '12px', 
+                    objectFit: 'cover',
+                    border: '1px solid var(--gray-200)',
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 />
               ))}
             </div>

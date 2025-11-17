@@ -11,6 +11,7 @@ import { ChatPage } from './pages/ChatPage'
 import { AdminPage } from './pages/AdminPage'
 import { MyRoomsPage } from './pages/MyRoomsPage'
 import { CreateRoomPage } from './pages/CreateRoomPage'
+import { HelpPage } from './pages/HelpPage'
 import { useAuth } from './hooks/useAuth'
 
 type ProtectedProps = {
@@ -36,8 +37,8 @@ function Header() {
   const { user, logout } = useAuth()
 
   return (
-    <header className="bg-white shadow-sm">
-      <div className="container flex items-center justify-between py-3">
+    <header>
+      <div className="container flex items-center justify-between" style={{ padding: '1rem 0' }}>
         <Link to="/" className="logo-text">
           {t('appName')}
         </Link>
@@ -50,11 +51,12 @@ function Header() {
           {user && <Link to="/chat">{t('nav.chat')}</Link>}
           {user?.role === 'ADMIN' && <Link to="/admin">{t('nav.admin')}</Link>}
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" style={{ flexWrap: 'wrap' }}>
           <select
             className="lang-select"
             value={i18n.language}
             onChange={(e) => i18n.changeLanguage(e.target.value)}
+            style={{ minWidth: '100px' }}
           >
             <option value="en">{t('lang.en')}</option>
             <option value="am">{t('lang.am')}</option>
@@ -63,16 +65,16 @@ function Header() {
           </select>
           {!user && (
             <>
-              <Link to="/login" className="btn-secondary">
+              <Link to="/login" className="btn-secondary" style={{ whiteSpace: 'nowrap' }}>
                 {t('nav.login')}
               </Link>
-              <Link to="/signup" className="btn-primary">
+              <Link to="/signup" className="btn-primary" style={{ whiteSpace: 'nowrap' }}>
                 {t('nav.signup')}
               </Link>
             </>
           )}
           {user && (
-            <button className="btn-secondary" onClick={logout}>
+            <button className="btn-secondary" onClick={logout} style={{ whiteSpace: 'nowrap' }}>
               {t('nav.logout')}
             </button>
           )}
@@ -133,6 +135,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/help" element={<HelpPage />} />
         </Routes>
       </main>
     </div>

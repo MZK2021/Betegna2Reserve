@@ -73,8 +73,8 @@ async function createMockUsers() {
 
   for (const [country, cities] of Object.entries(areas)) {
     for (const [city, cityAreas] of Object.entries(cities)) {
-      // Create 2-3 users per city (mix of tenants and owners)
-      const userCount = randomInt(2, 3);
+      // Create 3-5 users per city (mix of tenants and owners) for better data population
+      const userCount = randomInt(3, 5);
       for (let i = 0; i < userCount; i++) {
         const isOwner = Math.random() > 0.5;
         const gender = Math.random() > 0.5 ? "male" : "female";
@@ -132,8 +132,8 @@ async function createMockRooms() {
       const cityOwners = ownerUsers.filter((u) => u.cityCurrent === city);
       if (cityOwners.length === 0) continue;
 
-      // Create 2-4 rooms per city
-      const roomCount = randomInt(2, 4);
+      // Create 4-6 rooms per city for better data population
+      const roomCount = randomInt(4, 6);
       for (let i = 0; i < roomCount; i++) {
         const owner = randomElement(cityOwners);
         const area = randomElement(cityAreas);
@@ -181,11 +181,20 @@ async function createMockRooms() {
             ...(Math.random() > 0.4 ? ["Parking"] : []),
             ...(Math.random() > 0.3 ? ["Furnished"] : []),
           ],
-          photos: [
-            "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400",
-            "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400",
-            "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400",
-          ],
+          photos: (() => {
+            // Different room images from Unsplash - varied and realistic
+            const roomImages = [
+              ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop"],
+              ["https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1556912172-45b7abe8b7e4?w=800&h=600&fit=crop"],
+              ["https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&h=600&fit=crop"],
+              ["https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1556912172-45b7abe8b7e4?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop"],
+              ["https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"],
+              ["https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop"],
+              ["https://images.unsplash.com/photo-1556912172-45b7abe8b7e4?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&h=600&fit=crop"],
+              ["https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop"],
+            ];
+            return randomElement(roomImages);
+          })(),
           description: `Cozy ${roomType.toLowerCase()} room in ${area}, ${city}. Perfect for Ethiopian community members. Close to public transport and Ethiopian restaurants.`,
           status: bedsAvailable > 0 ? "ACTIVE" : "FULL",
           ratingAvg: randomInt(35, 50) / 10,
@@ -205,28 +214,141 @@ async function createMockRooms() {
 function createMockAds() {
   const now = new Date();
 
-  const adPositions: Ad["position"][] = ["LANDING_TOP", "LISTING_SIDEBAR", "CHAT_BOTTOM", "PROFILE_SIDEBAR"];
+  // Ethiopian business ads - relevant to the community
+  const ethiopianGroceryAds = [
+    {
+      mediaUrl: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&h=400&fit=crop",
+      linkUrl: "https://example.com/ethiopian-grocery",
+      title: "Ethiopian Grocery Store - Fresh Ingredients"
+    },
+    {
+      mediaUrl: "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&h=400&fit=crop",
+      linkUrl: "https://example.com/ethiopian-market",
+      title: "Ethiopian Market - Spices & More"
+    },
+    {
+      mediaUrl: "https://images.unsplash.com/photo-1556910103-2d2624629b5a?w=800&h=400&fit=crop",
+      linkUrl: "https://example.com/ethiopian-spices",
+      title: "Ethiopian Spices & Traditional Foods"
+    }
+  ];
 
-  for (const position of adPositions) {
-    const ad: Ad = {
-      id: `ad_${position.toLowerCase()}`,
-      mediaUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800",
-      type: "IMAGE",
+  const ethiopianRestaurantAds = [
+    {
+      mediaUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=400&fit=crop",
+      linkUrl: "https://example.com/ethiopian-restaurant",
+      title: "Ethiopian Restaurant - Authentic Cuisine"
+    },
+    {
+      mediaUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=400&fit=crop",
+      linkUrl: "https://example.com/ethiopian-cuisine",
+      title: "Traditional Ethiopian Food - Injera & More"
+    },
+    {
+      mediaUrl: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&h=400&fit=crop",
+      linkUrl: "https://example.com/ethiopian-food",
+      title: "Ethiopian Restaurant - Home Away From Home"
+    }
+  ];
+
+  const sponsorBanners = [
+    {
+      mediaUrl: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&h=400&fit=crop",
       linkUrl: "https://example.com/sponsor",
-      position,
-      countries: position === "LANDING_TOP" ? undefined : ["UAE", "KSA", "QATAR"],
-      cities: position === "LISTING_SIDEBAR" ? ["Dubai", "Riyadh", "Doha"] : undefined,
-      active: true,
-      startAt: now,
-      endAt: new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000),
-      createdAt: now,
-      updatedAt: now,
-    };
+      title: "Community Sponsor"
+    },
+    {
+      mediaUrl: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&h=400&fit=crop",
+      linkUrl: "https://example.com/community-support",
+      title: "Supporting Ethiopian Community"
+    }
+  ];
 
-    ads.push(ad);
-  }
+  // Landing Top Ad
+  const landingAd: Ad = {
+    id: "ad_landing_top",
+    mediaUrl: randomElement(sponsorBanners).mediaUrl,
+    type: "IMAGE",
+    linkUrl: randomElement(sponsorBanners).linkUrl,
+    position: "LANDING_TOP",
+    countries: undefined,
+    cities: undefined,
+    active: true,
+    startAt: now,
+    endAt: new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000),
+    createdAt: now,
+    updatedAt: now,
+  };
+  ads.push(landingAd);
 
-  console.log(`✅ Created ${ads.length} mock ads`);
+  // Listing Sidebar Ads - Ethiopian Grocery & Restaurant
+  const sidebarGroceryAd: Ad = {
+    id: "ad_listing_sidebar_grocery",
+    mediaUrl: randomElement(ethiopianGroceryAds).mediaUrl,
+    type: "IMAGE",
+    linkUrl: randomElement(ethiopianGroceryAds).linkUrl,
+    position: "LISTING_SIDEBAR",
+    countries: ["UAE", "KSA", "QATAR", "OMAN", "BAHRAIN", "KUWAIT", "LEBANON", "YEMEN", "EGYPT"],
+    cities: undefined,
+    active: true,
+    startAt: now,
+    endAt: new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000),
+    createdAt: now,
+    updatedAt: now,
+  };
+  ads.push(sidebarGroceryAd);
+
+  const sidebarRestaurantAd: Ad = {
+    id: "ad_listing_sidebar_restaurant",
+    mediaUrl: randomElement(ethiopianRestaurantAds).mediaUrl,
+    type: "IMAGE",
+    linkUrl: randomElement(ethiopianRestaurantAds).linkUrl,
+    position: "LISTING_SIDEBAR",
+    countries: ["UAE", "KSA", "QATAR", "OMAN", "BAHRAIN", "KUWAIT", "LEBANON", "YEMEN", "EGYPT"],
+    cities: undefined,
+    active: true,
+    startAt: now,
+    endAt: new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000),
+    createdAt: now,
+    updatedAt: now,
+  };
+  ads.push(sidebarRestaurantAd);
+
+  // Chat Bottom Ad
+  const chatAd: Ad = {
+    id: "ad_chat_bottom",
+    mediaUrl: randomElement(sponsorBanners).mediaUrl,
+    type: "IMAGE",
+    linkUrl: randomElement(sponsorBanners).linkUrl,
+    position: "CHAT_BOTTOM",
+    countries: ["UAE", "KSA", "QATAR"],
+    cities: undefined,
+    active: true,
+    startAt: now,
+    endAt: new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000),
+    createdAt: now,
+    updatedAt: now,
+  };
+  ads.push(chatAd);
+
+  // Profile Sidebar Ad
+  const profileAd: Ad = {
+    id: "ad_profile_sidebar",
+    mediaUrl: randomElement(ethiopianGroceryAds).mediaUrl,
+    type: "IMAGE",
+    linkUrl: randomElement(ethiopianGroceryAds).linkUrl,
+    position: "PROFILE_SIDEBAR",
+    countries: ["UAE", "KSA", "QATAR"],
+    cities: undefined,
+    active: true,
+    startAt: now,
+    endAt: new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000),
+    createdAt: now,
+    updatedAt: now,
+  };
+  ads.push(profileAd);
+
+  console.log(`✅ Created ${ads.length} mock ads (Ethiopian businesses)`);
 }
 
 function createMockFeedback() {

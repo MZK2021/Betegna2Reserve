@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { AdBanner } from '../components/AdBanner'
+import { CommunityBanner } from '../components/CommunityBanner'
 import { useAuth } from '../hooks/useAuth'
 
 export function LandingPage() {
@@ -20,26 +20,22 @@ export function LandingPage() {
 
   return (
     <div>
-      <div className="layout-two-cols">
-        <div>
-          <div className="hero">
-            <div>
-              <h1 className="hero-title">{t('hero.title')}</h1>
-              <p className="hero-subtitle">{t('hero.subtitle')}</p>
-              <div className="hero-actions">
-                <button className="btn-primary" onClick={() => navigate('/rooms')}>
-                  {t('hero.ctaSeek')}
-                </button>
-                <button className="btn-secondary" onClick={handleHostClick}>
-                  {t('hero.ctaHost')}
-                </button>
-              </div>
-            </div>
+      <div className="hero">
+        <div style={{ maxWidth: '800px' }}>
+          <h1 className="hero-title">{t('hero.title')}</h1>
+          <p className="hero-subtitle">{t('hero.subtitle')}</p>
+          <div className="hero-actions">
+            <button className="btn-primary" onClick={() => navigate('/rooms')}>
+              {t('hero.ctaSeek')}
+            </button>
+            <button className="btn-secondary" onClick={handleHostClick}>
+              {t('hero.ctaHost')}
+            </button>
           </div>
         </div>
-        <div>
-          <AdBanner position="LANDING_TOP" country="UAE" />
-        </div>
+      </div>
+      <div style={{ marginTop: '2rem' }}>
+        <CommunityBanner />
       </div>
     </div>
   )

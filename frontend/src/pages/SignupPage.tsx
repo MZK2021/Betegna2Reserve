@@ -42,8 +42,9 @@ export function SignupPage() {
   }
 
   return (
-    <div className="card" style={{ maxWidth: 420, margin: '2rem auto' }}>
-      <h2 className="mb-4">{t('auth.signupTitle')}</h2>
+    <div style={{ maxWidth: 480, margin: '3rem auto' }}>
+      <div className="card">
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--gray-900)' }}>{t('auth.signupTitle')}</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-field">
           <label>{t('auth.name')}</label>
@@ -74,20 +75,28 @@ export function SignupPage() {
           </select>
         </div>
         {error && (
-          <div className="text-sm" style={{ color: '#b91c1c', marginBottom: '0.75rem' }}>
+          <div className="text-sm" style={{ 
+            color: 'var(--error)', 
+            marginBottom: '0.75rem', 
+            padding: '0.75rem',
+            backgroundColor: '#FEE2E2',
+            borderRadius: '8px',
+            border: '1px solid #FECACA'
+          }}>
             {error}
           </div>
         )}
-        <button className="btn-primary full-width" type="submit" disabled={loading}>
-          {loading ? '...' : t('auth.submit')}
+        <button className="btn-primary full-width" type="submit" disabled={loading} style={{ marginTop: '0.5rem' }}>
+          {loading ? 'Creating account...' : t('auth.submit')}
         </button>
       </form>
-      <p className="text-sm text-muted mt-4">
+      <p className="text-sm text-muted mt-4" style={{ textAlign: 'center' }}>
         {t('auth.haveAccount')}{' '}
-        <Link to="/login" style={{ textDecoration: 'underline' }}>
+        <Link to="/login" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>
           {t('nav.login')}
         </Link>
       </p>
+      </div>
     </div>
   )
 }

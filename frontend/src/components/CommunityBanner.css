@@ -1,0 +1,73 @@
+.community-banner {
+  background: var(--gradient-koamaru-metallic);
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow-brand-lg);
+  margin: 2rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.community-banner-item {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.community-banner-item:last-child {
+  border-bottom: none;
+}
+
+.community-banner-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: var(--tangerine-yellow);
+  transition: width 0.3s;
+}
+
+.community-banner-item:hover {
+  background: var(--gradient-koamaru-light);
+  padding-left: 2rem;
+}
+
+.community-banner-item:hover::before {
+  width: 4px;
+}
+
+.community-banner-text {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .community-banner-item {
+    padding: 1rem 1.25rem;
+  }
+  
+  .community-banner-text {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .community-banner-item {
+    padding: 0.875rem 1rem;
+  }
+  
+  .community-banner-text {
+    font-size: 0.85rem;
+  }
+}
+

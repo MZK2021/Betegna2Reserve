@@ -22,10 +22,12 @@ export function AdBanner({ position, country, city }: Props) {
     }
   })
 
-  const ad = data?.[0]
-  if (!ad) return null
+  if (!data || data.length === 0) return null
 
-  const handleClick = async () => {
+  // For sidebar, show all ads stacked. For other positions, show first ad
+  const adsToShow = position === 'LISTING_SIDEBAR' ? data : [data[0]]
+
+  const handleClick = async (ad: Ad) => {
     try {
       await api.post(`/ads/${ad.id}/click`, { country, city })
     } catch {
@@ -35,8 +37,28 @@ export function AdBanner({ position, country, city }: Props) {
   }
 
   return (
-    <div className="card mb-4 text-sm text-muted" onClick={handleClick} style={{ cursor: 'pointer' }}>
-      <img src={ad.mediaUrl} alt="Ad" className="full-width" />
-    </div>
+    <>
+      {adsToShow.map((ad) => (
+        <div 
+          key={ad.id} 
+          className="card mb-4 text-sm text-muted" 
+          onClick={() => handleClick(ad)} 
+          style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <img 
+            src={ad.mediaUrl} 
+            alt="Ad" 
+            style={{ 
+              width: '100%', 
+              height: 'auto', 
+              borderRadius: '8px',
+              display: 'block'
+            }} 
+          />
+        </div>
+      ))}
+    </>
   )
 }

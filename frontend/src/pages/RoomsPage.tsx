@@ -84,7 +84,7 @@ export function RoomsPage() {
   return (
     <div className="layout-two-cols">
       <div>
-        <div className="card mb-4">
+        <div className="search-filters">
           <h2 className="mb-4">{t('filters.title')}</h2>
           <div className="form-field">
             <label>{t('filters.country')}</label>
@@ -199,6 +199,14 @@ export function RoomsPage() {
                   {room.photos && room.photos.length > 0 && (
                     <div className="room-card-image">
                       <img src={room.photos[0]} alt={room.city} />
+                      {room.shortStayAllowed && (
+                        <div className="room-card-badge">Short Stay</div>
+                      )}
+                    </div>
+                  )}
+                  {!room.photos || room.photos.length === 0 && (
+                    <div className="room-card-image" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gray-400)' }}>
+                      <span>No Image</span>
                     </div>
                   )}
                   <div className="room-card-content">
@@ -206,16 +214,18 @@ export function RoomsPage() {
                       {room.city}, {room.area}
                     </div>
                     <div className="room-card-meta">
-                      {room.country} • {room.roomType || 'Room'} {room.shortStayAllowed && '• ' + t('rooms.shortStay')}
+                      {room.country} • {room.roomType || 'Room'}
                     </div>
                     {room.amenities && room.amenities.length > 0 && (
                       <div className="room-card-amenities">
-                        {room.amenities.slice(0, 3).join(' • ')}
+                        {room.amenities.slice(0, 3).map((amenity, idx) => (
+                          <span key={idx}>{amenity}</span>
+                        ))}
                       </div>
                     )}
                     {room.ratingAvg && (
                       <div className="room-card-rating">
-                        ⭐ {room.ratingAvg.toFixed(1)} ({room.ratingCount ?? 0})
+                        ⭐ {room.ratingAvg.toFixed(1)} <span style={{ color: 'var(--gray-600)', fontWeight: 'normal' }}>({room.ratingCount ?? 0} reviews)</span>
                       </div>
                     )}
                     <div className="room-card-price">
@@ -225,23 +235,23 @@ export function RoomsPage() {
                 </Link>
               ))}
             </div>
-            <div className="flex items-center gap-2 mt-4">
+            <div className="pagination">
               <button
                 className="btn-secondary"
                 disabled={page === 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
               >
-                Prev
+                ← Previous
               </button>
-              <span className="text-sm text-muted">
-                Page {data.page} / {Math.max(1, Math.ceil(data.total / data.pageSize))}
+              <span className="text-sm text-muted" style={{ padding: '0 1rem' }}>
+                Page {data.page} of {Math.max(1, Math.ceil(data.total / data.pageSize))}
               </span>
               <button
                 className="btn-secondary"
                 disabled={data.page * data.pageSize >= data.total}
                 onClick={() => setPage((p) => p + 1)}
               >
-                Next
+                Next →
               </button>
             </div>
           </div>
