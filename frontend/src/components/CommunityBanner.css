@@ -6,10 +6,7 @@
 }
 
 .community-banner-item {
-  background: var(--glass-bg-dark);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+  border: 2px solid var(--glass-border);
   border-radius: 20px;
   padding: 2rem 1.5rem;
   display: flex;
@@ -19,10 +16,37 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  min-height: 120px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  min-height: 140px;
 }
 
+/* Dark overlay to ensure text visibility */
+.community-banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(10, 26, 79, 0.75) 0%,
+    rgba(10, 26, 79, 0.65) 50%,
+    rgba(5, 11, 34, 0.8) 100%
+  );
+  transition: all 0.3s;
+  z-index: 1;
+}
+
+.community-banner-item:hover .community-banner-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(10, 26, 79, 0.65) 0%,
+    rgba(10, 26, 79, 0.55) 50%,
+    rgba(5, 11, 34, 0.7) 100%
+  );
+}
+
+/* Gold accent overlay on hover */
 .community-banner-item::before {
   content: '';
   position: absolute;
@@ -30,31 +54,69 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--gradient-sky);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 204, 51, 0.2) 0%,
+    rgba(255, 204, 51, 0.1) 50%,
+    transparent 100%
+  );
   opacity: 0;
   transition: opacity 0.3s;
+  z-index: 2;
 }
 
 .community-banner-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(10, 26, 79, 0.4), var(--glow-blue);
-  border-color: rgba(255, 204, 51, 0.5);
+  box-shadow: 0 12px 40px rgba(10, 26, 79, 0.5), 0 0 20px rgba(255, 204, 51, 0.3);
+  border-color: var(--gold-accent);
 }
 
 .community-banner-item:hover::before {
-  opacity: 0.15;
+  opacity: 1;
 }
 
 .community-banner-text {
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 1.1rem;
+  color: var(--white);
+  font-weight: 800;
+  font-size: 1.2rem;
   font-family: 'Poppins', sans-serif;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   text-align: center;
   position: relative;
-  z-index: 1;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.8),
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(255, 204, 51, 0.5);
+  line-height: 1.4;
+  padding: 0.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 204, 51, 0.15) 100%
+  );
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 204, 51, 0.3);
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s;
+}
+
+.community-banner-item:hover .community-banner-text {
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.9),
+    0 4px 16px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(255, 204, 51, 0.7);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 204, 51, 0.2) 100%
+  );
+  border-color: rgba(255, 204, 51, 0.5);
+  transform: scale(1.02);
 }
 
 @media (max-width: 768px) {
@@ -65,11 +127,12 @@
   
   .community-banner-item {
     padding: 1.5rem 1.25rem;
-    min-height: 100px;
+    min-height: 120px;
   }
   
   .community-banner-text {
-    font-size: 1rem;
+    font-size: 1.05rem;
+    padding: 0.75rem;
   }
 }
 
@@ -80,11 +143,12 @@
   
   .community-banner-item {
     padding: 1.25rem 1rem;
-    min-height: 90px;
+    min-height: 110px;
   }
   
   .community-banner-text {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    padding: 0.5rem;
   }
 }
 
