@@ -320,17 +320,23 @@ export function CreateRoomPage() {
             <label htmlFor="photo-upload">
               <button
                 type="button"
-                className="btn-secondary"
+                className="btn-primary"
                 onClick={(e) => {
                   e.preventDefault()
                   document.getElementById('photo-upload')?.click()
                 }}
                 disabled={formData.photos.length >= 3}
-                style={{ cursor: formData.photos.length >= 3 ? 'not-allowed' : 'pointer' }}
+                style={{ 
+                  cursor: formData.photos.length >= 3 ? 'not-allowed' : 'pointer',
+                  width: '100%',
+                  padding: '0.875rem 1.5rem',
+                  fontSize: '1rem',
+                  fontWeight: 600
+                }}
               >
                 {formData.photos.length >= 3 
-                  ? 'Maximum 3 images reached' 
-                  : `Upload Images (${formData.photos.length}/3)`}
+                  ? '📷 Maximum 3 images reached' 
+                  : `📷 Upload Images (${formData.photos.length}/3)`}
               </button>
             </label>
           </div>

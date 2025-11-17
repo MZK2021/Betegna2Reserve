@@ -353,6 +353,16 @@ header .container {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+  background: var(--gray-300);
+  color: var(--gray-700);
+  box-shadow: none;
+}
+
+.btn-primary:disabled:hover {
+  background: var(--gray-300);
+  color: var(--gray-700);
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-secondary {
@@ -376,6 +386,23 @@ header .container {
 
 .btn-secondary:active {
   transform: translateY(0);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--gray-300);
+  color: var(--gray-700);
+  border-color: var(--gray-400);
+  pointer-events: none;
+}
+
+.btn-secondary:disabled:hover {
+  background: var(--gray-300);
+  color: var(--gray-700);
+  border-color: var(--gray-400);
+  transform: none;
+  box-shadow: none;
 }
 
 /* Hero Section - Full width with Deep Blue Gradient */
@@ -1556,7 +1583,38 @@ a, button {
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
-  padding: 1rem;
+  padding: 1rem 0;
+}
+
+.pagination button {
+  min-width: 120px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 50px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.pagination button:not(:disabled) {
+  background: var(--gradient-gold);
+  color: var(--midnight-navy);
+  border: 2px solid var(--gold-accent);
+  box-shadow: var(--shadow-gold);
+  cursor: pointer;
+}
+
+.pagination button:not(:disabled):hover {
+  background: var(--gradient-gold-glossy);
+  box-shadow: var(--shadow-gold-lg), var(--glow-gold);
+  transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+  background: var(--gray-200);
+  color: var(--gray-500);
+  border: 2px solid var(--gray-300);
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
 }
 
 /* Brand Gradients - Utility Classes */
