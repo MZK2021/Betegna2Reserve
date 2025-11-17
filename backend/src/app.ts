@@ -26,7 +26,8 @@ app.use(cors({
 //   crossOriginResourcePolicy: { policy: "cross-origin" },
 // }));
 
-app.use(express.json({ limit: "1mb" }));
+// Increase body size limit to handle base64 image uploads (up to 3 images)
+app.use(express.json({ limit: "20mb" }));
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,

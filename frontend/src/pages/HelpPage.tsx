@@ -1,26 +1,39 @@
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import './HelpPage.css'
 
-const serviceInfo: Record<string, { title: string; description: string; contact: string }> = {
+const phoneNumber = '+971569187989'
+const whatsappNumber = '971569187989' // WhatsApp format without + and spaces
+
+const serviceInfo: Record<string, { 
+  title: string
+  description: string
+  contact: string
+  backgroundImage: string
+}> = {
   visa: {
     title: 'VISA Services - Turkey & Europe',
     description: 'Need help with visa applications for Turkey or Europe? Our community partners can assist you with the visa process.',
-    contact: 'Call us: +971 XX XXX XXXX | WhatsApp: +971 XX XXX XXXX'
+    contact: `Call us: ${phoneNumber} | WhatsApp: ${phoneNumber}`,
+    backgroundImage: '/images/banner-visa.jpg'
   },
   car: {
     title: 'Car & Lyft Services',
     description: 'Looking for car rental, ride-sharing, or transportation services? We can connect you with trusted drivers and car services in your area.',
-    contact: 'Call us: +971 XX XXX XXXX | WhatsApp: +971 XX XXX XXXX'
+    contact: `Call us: ${phoneNumber} | WhatsApp: ${phoneNumber}`,
+    backgroundImage: '/images/Car%20Lyft.jpg'
   },
   business: {
     title: 'Business Connections',
     description: 'Need business networking, partnerships, or connections within the Ethiopian community? Let us help you connect with entrepreneurs and business owners.',
-    contact: 'Call us: +971 XX XXX XXXX | WhatsApp: +971 XX XXX XXXX'
+    contact: `Call us: ${phoneNumber} | WhatsApp: ${phoneNumber}`,
+    backgroundImage: '/images/business.jpg'
   },
   grocery: {
     title: 'Ethiopian Grocery - Injera, Berbere, Shero',
     description: 'Looking for authentic Ethiopian ingredients? We can help you find Ethiopian grocery stores, restaurants, and suppliers for Injera, Berbere, Shero, and more.',
-    contact: 'Call us: +971 XX XXX XXXX | WhatsApp: +971 XX XXX XXXX'
+    contact: `Call us: ${phoneNumber} | WhatsApp: ${phoneNumber}`,
+    backgroundImage: '/images/injera.jpg'
   }
 }
 
@@ -32,77 +45,66 @@ export function HelpPage() {
   const info = serviceInfo[service] || {
     title: 'How Can We Help?',
     description: 'Our community support team is here to assist you. Contact us for any services you need.',
-    contact: 'Call us: +971 XX XXX XXXX | WhatsApp: +971 XX XXX XXXX'
+    contact: `Call us: ${phoneNumber} | WhatsApp: ${phoneNumber}`,
+    backgroundImage: '/images/business.jpg' // Default image
   }
 
   return (
-    <div style={{ maxWidth: 700, margin: '3rem auto' }}>
-      <div className="card">
-        <button 
-          className="btn-secondary" 
-          onClick={() => navigate(-1)}
-          style={{ marginBottom: '1.5rem' }}
-        >
-          ← Back
-        </button>
-        
-        <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--gray-900)' }}>
-          {info.title}
-        </h2>
-        
-        <p style={{ fontSize: '1.1rem', color: 'var(--gray-700)', marginBottom: '2rem', lineHeight: 1.6 }}>
-          {info.description}
-        </p>
-        
-        <div style={{
-          background: 'var(--gradient-hero)',
-          padding: '1.5rem',
-          borderRadius: '16px',
-          border: '1px solid var(--deep-royal-blue)',
-          marginBottom: '1.5rem',
-          color: 'var(--white)',
-          boxShadow: 'var(--shadow-brand-lg)'
-        }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--white)' }}>
-            Contact Us - Let's Help You
-          </h3>
-          <p style={{ color: 'rgba(255, 255, 255, 0.95)', fontSize: '1rem', marginBottom: '0.5rem' }}>
-            {info.contact}
-          </p>
-          <p style={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: '0.9rem' }}>
-            Our team is available to assist you. Reach out and we'll connect you with the right resources.
-          </p>
-        </div>
-        
-        <div style={{
-          display: 'flex',
-          gap: '1rem',
-          flexWrap: 'wrap'
-        }}>
-          <a 
-            href="tel:+971XXXXXXXXX" 
-            className="btn-primary"
-            style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+    <div className="help-page-container">
+      <div 
+        className="help-page-card"
+        style={{
+          backgroundImage: `url(${info.backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="help-page-overlay"></div>
+        <div className="help-page-content">
+          <button 
+            className="btn-secondary help-back-btn" 
+            onClick={() => navigate(-1)}
           >
-            📞 Call Now
-          </a>
-          <a 
-            href="https://wa.me/971XXXXXXXXX" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary"
-            style={{ 
-              textDecoration: 'none', 
-              display: 'inline-flex', 
-              alignItems: 'center', 
-              gap: '0.5rem',
-              background: 'var(--gold-accent)',
-              color: 'var(--midnight-navy)',
-              borderColor: 'var(--gold-accent)'
-            }}
-          >
-            💬 WhatsApp
-          </a>
+            ← Back
+          </button>
+          
+          <h2 className="help-page-title">
+            {info.title}
+          </h2>
+          
+          <p className="help-page-description">
+            {info.description}
+          </p>
+          
+          <div className="help-contact-card">
+            <h3 className="help-contact-title">
+              Contact Us - Let's Help You
+            </h3>
+            <p className="help-contact-info">
+              {info.contact}
+            </p>
+            <p className="help-contact-subtext">
+              Our team is available to assist you. Reach out and we'll connect you with the right resources.
+            </p>
+          </div>
+          
+          <div className="help-action-buttons">
+            <a 
+              href={`tel:${phoneNumber.replace(/\s/g, '')}`}
+              className="btn-primary help-call-btn"
+            >
+              📞 Call Now
+            </a>
+            <a 
+              href={`https://wa.me/${whatsappNumber}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary help-whatsapp-btn"
+            >
+              💬 WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </div>

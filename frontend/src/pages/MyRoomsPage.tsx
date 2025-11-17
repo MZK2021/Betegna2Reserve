@@ -107,7 +107,7 @@ export function MyRoomsPage() {
                 </div>
                 {room.ratingAvg && (
                   <div className="room-card-rating mt-2">
-                    ⭐ {room.ratingAvg.toFixed(1)} ({room.ratingCount ?? 0} reviews)
+                    ⭐ {room.ratingAvg.toFixed(1)} {room.ratingCount !== undefined && room.ratingCount !== null && room.ratingCount > 0 ? `(${room.ratingCount} reviews)` : '(No reviews)'}
                   </div>
                 )}
                 <div className="flex gap-2 mt-4">

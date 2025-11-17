@@ -279,7 +279,7 @@ export function RoomDetailPage() {
                 {room.owner.ratingAvg && (
                   <div className="owner-rating">
                     ⭐ {room.owner.ratingAvg.toFixed(1)} 
-                    <span className="text-muted"> ({room.owner.ratingCount ?? 0} reviews)</span>
+                    <span className="text-muted"> ({(room.owner.ratingCount ?? 0) > 0 ? `${room.owner.ratingCount} reviews` : 'No reviews'})</span>
                   </div>
                 )}
                 <div className="owner-status">

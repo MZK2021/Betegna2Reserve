@@ -99,7 +99,7 @@ export function ProfilePage() {
             </div>
             {data.ratingAvg && (
               <div className="profile-rating-large">
-                ⭐ {data.ratingAvg.toFixed(1)} <span className="text-muted">({data.ratingCount ?? 0} reviews)</span>
+                ⭐ {data.ratingAvg.toFixed(1)} <span className="text-muted">({(data.ratingCount ?? 0) > 0 ? `${data.ratingCount} reviews` : 'No reviews'})</span>
               </div>
             )}
           </div>
@@ -167,7 +167,7 @@ export function ProfilePage() {
               )}
               {data.ratingAvg && (
                 <div className="profile-info-item">
-                  <strong>⭐ Rating:</strong> {data.ratingAvg.toFixed(1)} ({data.ratingCount ?? 0} reviews)
+                  <strong>⭐ Rating:</strong> {data.ratingAvg.toFixed(1)} ({(data.ratingCount ?? 0) > 0 ? `${data.ratingCount} reviews` : 'No reviews'})
                 </div>
               )}
             </div>

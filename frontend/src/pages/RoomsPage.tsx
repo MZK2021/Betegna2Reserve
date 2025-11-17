@@ -255,7 +255,9 @@ export function RoomsPage() {
                     )}
                     {room.ratingAvg && (
                       <div className="room-card-rating">
-                        ⭐ {room.ratingAvg.toFixed(1)} <span style={{ color: 'var(--gray-600)', fontWeight: 'normal' }}>({room.ratingCount ?? 0} reviews)</span>
+                        ⭐ {room.ratingAvg.toFixed(1)} <span style={{ color: 'var(--gray-600)', fontWeight: 'normal' }}>
+                          {room.ratingCount !== undefined && room.ratingCount !== null && room.ratingCount > 0 ? `(${room.ratingCount} reviews)` : '(No reviews)'}
+                        </span>
                       </div>
                     )}
                     <div className="room-card-footer">
